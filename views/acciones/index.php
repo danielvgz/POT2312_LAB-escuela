@@ -1,25 +1,27 @@
 <div class="page-header"><h3>Acciones registradas</h3></div>
-<table class="table table-bordered table-striped">
-    <thead><tr><th>ID</th><th>Usuario</th><th>Rol</th><th>Acción</th><th>Entidad</th><th>Detalle</th><th>Fecha</th><th>Acciones</th></tr></thead>
-    <tbody>
-    <?php foreach ($rows as $r): ?>
-        <tr>
-            <td><?php echo (int) $r['id']; ?></td>
-            <td><?php echo htmlspecialchars($r['user_correo'] ?? '-'); ?></td>
-            <td><?php echo htmlspecialchars($r['rol']); ?></td>
-            <td><?php echo htmlspecialchars($r['accion']); ?></td>
-            <td><?php echo htmlspecialchars($r['entidad']); ?></td>
-            <td><?php echo htmlspecialchars($r['detalle']); ?></td>
-            <td><?php echo htmlspecialchars($r['created_at']); ?></td>
-            <td>
-                <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#viewModal" onclick="viewRecord(<?php echo (int) $r['id']; ?>, '<?php echo htmlspecialchars($r['user_correo'] ?? '-'); ?>', '<?php echo htmlspecialchars($r['rol']); ?>', '<?php echo htmlspecialchars($r['accion']); ?>', '<?php echo htmlspecialchars($r['entidad']); ?>', '<?php echo htmlspecialchars($r['detalle']); ?>', '<?php echo htmlspecialchars($r['created_at']); ?>')">
-                    <span class="glyphicon glyphicon-eye-open"></span>
-                </button>
-            </td>
-        </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+        <thead><tr><th>ID</th><th>Usuario</th><th>Rol</th><th>Acción</th><th>Entidad</th><th>Detalle</th><th>Fecha</th><th>Acciones</th></tr></thead>
+        <tbody>
+        <?php foreach ($rows as $r): ?>
+            <tr>
+                <td><?php echo (int) $r['id']; ?></td>
+                <td><?php echo htmlspecialchars($r['user_correo'] ?? '-'); ?></td>
+                <td><?php echo htmlspecialchars($r['rol']); ?></td>
+                <td><?php echo htmlspecialchars($r['accion']); ?></td>
+                <td><?php echo htmlspecialchars($r['entidad']); ?></td>
+                <td><?php echo htmlspecialchars($r['detalle']); ?></td>
+                <td><?php echo htmlspecialchars($r['created_at']); ?></td>
+                <td>
+                    <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#viewModal" onclick="viewRecord(<?php echo (int) $r['id']; ?>, '<?php echo htmlspecialchars($r['user_correo'] ?? '-'); ?>', '<?php echo htmlspecialchars($r['rol']); ?>', '<?php echo htmlspecialchars($r['accion']); ?>', '<?php echo htmlspecialchars($r['entidad']); ?>', '<?php echo htmlspecialchars($r['detalle']); ?>', '<?php echo htmlspecialchars($r['created_at']); ?>')" title="Ver detalles">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                    </button>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 <?php if (!empty($pages) && $pages > 1): ?>
     <nav>
@@ -43,39 +45,37 @@
                 <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span> Detalles de la Acción</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label><strong>ID:</strong></label>
-                            <p id="viewId"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Usuario:</strong></label>
-                            <p id="viewUsuario"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Rol:</strong></label>
-                            <p id="viewRol"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Acción:</strong></label>
-                            <p id="viewAccion"></p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label><strong>Entidad:</strong></label>
-                            <p id="viewEntidad"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Detalle:</strong></label>
-                            <p id="viewDetalle"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Fecha:</strong></label>
-                            <p id="viewFecha"></p>
-                        </div>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <tr>
+                            <td><strong>ID:</strong></td>
+                            <td id="viewId"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Usuario:</strong></td>
+                            <td id="viewUsuario"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rol:</strong></td>
+                            <td id="viewRol"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Acción:</strong></td>
+                            <td id="viewAccion"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Entidad:</strong></td>
+                            <td id="viewEntidad"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Detalle:</strong></td>
+                            <td id="viewDetalle"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha:</strong></td>
+                            <td id="viewFecha"></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div class="modal-footer">
