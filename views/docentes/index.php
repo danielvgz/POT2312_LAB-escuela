@@ -1,36 +1,44 @@
 <div class="page-header">
     <h3>Docentes</h3>
 </div>
-<a class="btn btn-success" href="index.php?controller=docentes&action=form"><span class="glyphicon glyphicon-plus"></span> Nuevo docente</a>
-<br><br>
-<table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-        <th>ID</th><th>Nombre</th><th>Apellido</th><th>Correo</th><th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($rows as $r): ?>
+<div class="row">
+    <div class="col-xs-12">
+        <a class="btn btn-success" href="index.php?controller=docentes&action=form"><span class="glyphicon glyphicon-plus"></span> Nuevo docente</a>
+    </div>
+</div>
+<br>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
         <tr>
-            <td><?php echo (int) $r['id']; ?></td>
-            <td><?php echo htmlspecialchars($r['nombre']); ?></td>
-            <td><?php echo htmlspecialchars($r['apellido']); ?></td>
-            <td><?php echo htmlspecialchars($r['correo']); ?></td>
-            <td>
-                <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#viewModal" onclick="viewRecord(<?php echo (int) $r['id']; ?>, '<?php echo htmlspecialchars($r['nombre']); ?>', '<?php echo htmlspecialchars($r['apellido']); ?>', '<?php echo htmlspecialchars($r['correo']); ?>', '<?php echo htmlspecialchars($r['sexo']); ?>', '<?php echo htmlspecialchars($r['fecha_nacimiento']); ?>', '<?php echo htmlspecialchars($r['fecha_registro']); ?>', '<?php echo htmlspecialchars($r['foto']); ?>')">
-                    <span class="glyphicon glyphicon-eye-open"></span> Ver
-                </button>
-                <a class="btn btn-primary btn-xs" href="index.php?controller=docentes&action=form&id=<?php echo (int) $r['id']; ?>">
-                    <span class="glyphicon glyphicon-pencil"></span> Editar
-                </a>
-                <a class="btn btn-danger btn-xs" href="index.php?controller=docentes&action=delete&id=<?php echo (int) $r['id']; ?>" onclick="return confirm('¿Eliminar registro?');">
-                    <span class="glyphicon glyphicon-trash"></span> Eliminar
-                </a>
-            </td>
+            <th>ID</th><th>Nombre</th><th>Apellido</th><th>Correo</th><th>Acciones</th>
         </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <?php foreach ($rows as $r): ?>
+            <tr>
+                <td><?php echo (int) $r['id']; ?></td>
+                <td><?php echo htmlspecialchars($r['nombre']); ?></td>
+                <td><?php echo htmlspecialchars($r['apellido']); ?></td>
+                <td><?php echo htmlspecialchars($r['correo']); ?></td>
+                <td>
+                    <div class="btn-group btn-group-xs" role="group">
+                        <button class="btn btn-info" data-toggle="modal" data-target="#viewModal" onclick="viewRecord(<?php echo (int) $r['id']; ?>, '<?php echo htmlspecialchars($r['nombre']); ?>', '<?php echo htmlspecialchars($r['apellido']); ?>', '<?php echo htmlspecialchars($r['correo']); ?>', '<?php echo htmlspecialchars($r['sexo']); ?>', '<?php echo htmlspecialchars($r['fecha_nacimiento']); ?>', '<?php echo htmlspecialchars($r['fecha_registro']); ?>', '<?php echo htmlspecialchars($r['foto']); ?>')" title="Ver detalles">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                        </button>
+                        <a class="btn btn-primary" href="index.php?controller=docentes&action=form&id=<?php echo (int) $r['id']; ?>" title="Editar">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a class="btn btn-danger" href="index.php?controller=docentes&action=delete&id=<?php echo (int) $r['id']; ?>" onclick="return confirm('¿Eliminar registro?');" title="Eliminar">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 <?php if (!empty($pages) && $pages > 1): ?>
     <nav>
         <ul class="pagination">
@@ -53,43 +61,41 @@
                 <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span> Detalles del Docente</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label><strong>ID:</strong></label>
-                            <p id="viewId"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Nombre:</strong></label>
-                            <p id="viewNombre"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Apellido:</strong></label>
-                            <p id="viewApellido"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Correo:</strong></label>
-                            <p id="viewCorreo"></p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label><strong>Sexo:</strong></label>
-                            <p id="viewSexo"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Fecha Nacimiento:</strong></label>
-                            <p id="viewFechaNacimiento"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Fecha Registro:</strong></label>
-                            <p id="viewFechaRegistro"></p>
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Foto:</strong></label>
-                            <p id="viewFoto"></p>
-                        </div>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <tr>
+                            <td><strong>ID:</strong></td>
+                            <td id="viewId"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nombre:</strong></td>
+                            <td id="viewNombre"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Apellido:</strong></td>
+                            <td id="viewApellido"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Correo:</strong></td>
+                            <td id="viewCorreo"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sexo:</strong></td>
+                            <td id="viewSexo"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha Nacimiento:</strong></td>
+                            <td id="viewFechaNacimiento"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha Registro:</strong></td>
+                            <td id="viewFechaRegistro"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Foto:</strong></td>
+                            <td id="viewFoto"></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div class="modal-footer">
