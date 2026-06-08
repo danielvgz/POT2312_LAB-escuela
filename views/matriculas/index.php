@@ -23,8 +23,8 @@
             </div>
         <?php endif; ?>
         <button class="btn btn-default" type="submit">Filtrar</button>
-        <a class="btn btn-success" href="index.php?controller=matriculas&action=form">Nueva asignacion</a>
-        <a class="btn btn-info" href="index.php?controller=matriculas&action=exportar<?php echo !empty($materiaId) ? '&materia_id=' . (int) $materiaId : ''; ?>">Exportar lista</a>
+        <a class="btn btn-success" href="index.php?controller=matriculas&action=form"><span class="glyphicon glyphicon-plus"></span> Nueva asignacion</a>
+        <a class="btn btn-info" href="index.php?controller=matriculas&action=exportar<?php echo !empty($materiaId) ? '&materia_id=' . (int) $materiaId : ''; ?>"><span class="glyphicon glyphicon-download"></span> Exportar lista</a>
     </form>
     <br>
 <?php endif; ?>
@@ -89,8 +89,15 @@
             <td><?php echo htmlspecialchars($r['obj4']); ?></td>
             <?php if (!empty($canManage)): ?>
                 <td>
-                    <a class="btn btn-primary btn-xs" href="index.php?controller=matriculas&action=form&id=<?php echo (int) $r['id']; ?>">Editar</a>
-                    <a class="btn btn-danger btn-xs" href="index.php?controller=matriculas&action=delete&id=<?php echo (int) $r['id']; ?>" onclick="return confirm('¿Eliminar registro?');">Eliminar</a>
+                    <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#viewModal" onclick="viewRecord(<?php echo (int) $r['id']; ?>, '<?php echo htmlspecialchars($r['alumno_nombre'] . ' ' . $r['alumno_apellido']); ?>', '<?php echo htmlspecialchars($r['materia_nombre']); ?>', '<?php echo htmlspecialchars($r['docente_nombre'] . ' ' . $r['docente_apellido']); ?>', '<?php echo htmlspecialchars($r['fecha_matricula']); ?>', '<?php echo htmlspecialchars($r['obj1']); ?>', '<?php echo htmlspecialchars($r['obj2']); ?>', '<?php echo htmlspecialchars($r['obj3']); ?>', '<?php echo htmlspecialchars($r['obj4']); ?>')">
+                        <span class="glyphicon glyphicon-eye-open"></span> Ver
+                    </button>
+                    <a class="btn btn-primary btn-xs" href="index.php?controller=matriculas&action=form&id=<?php echo (int) $r['id']; ?>">
+                        <span class="glyphicon glyphicon-pencil"></span> Editar
+                    </a>
+                    <a class="btn btn-danger btn-xs" href="index.php?controller=matriculas&action=delete&id=<?php echo (int) $r['id']; ?>" onclick="return confirm('¿Eliminar registro?');">
+                        <span class="glyphicon glyphicon-trash"></span> Eliminar
+                    </a>
                 </td>
             <?php endif; ?>
         </tr>
@@ -109,3 +116,77 @@
         </ul>
     </nav>
 <?php endif; ?>
+
+<!-- Modal para Ver Detalles -->
+<div class="modal fade" id="viewModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-info-sign"></span> Detalles de la Matrícula</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label><strong>ID:</strong></label>
+                            <p id="viewId"></p>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Alumno:</strong></label>
+                            <p id="viewAlumno"></p>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Materia:</strong></label>
+                            <p id="viewMateria"></p>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Docente:</strong></label>
+                            <p id="viewDocente"></p>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Fecha Matrícula:</strong></label>
+                            <p id="viewFecha"></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label><strong>Objetivo 1:</strong></label>
+                            <p id="viewObj1"></p>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Objetivo 2:</strong></label>
+                            <p id="viewObj2"></p>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Objetivo 3:</strong></label>
+                            <p id="viewObj3"></p>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Objetivo 4:</strong></label>
+                            <p id="viewObj4"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function viewRecord(id, alumno, materia, docente, fecha, obj1, obj2, obj3, obj4) {
+    document.getElementById('viewId').textContent = id;
+    document.getElementById('viewAlumno').textContent = alumno;
+    document.getElementById('viewMateria').textContent = materia;
+    document.getElementById('viewDocente').textContent = docente;
+    document.getElementById('viewFecha').textContent = fecha;
+    document.getElementById('viewObj1').textContent = obj1;
+    document.getElementById('viewObj2').textContent = obj2;
+    document.getElementById('viewObj3').textContent = obj3;
+    document.getElementById('viewObj4').textContent = obj4;
+}
+</script>
