@@ -51,6 +51,7 @@ class MatriculasController extends BaseCrudController
             'role' => $role,
             'materiaId' => $materiaId,
             'materias' => $availableMaterias,
+            'alumnos' => $this->model->alumnos(),
             'canManage' => isset($canManage) ? $canManage : false,
             'canEnroll' => isset($canEnroll) ? $canEnroll : false,
             'maxCreditos' => 12,
@@ -154,6 +155,72 @@ class MatriculasController extends BaseCrudController
             'obj4' => '',
         ));
         $this->logAction('create', 'matriculas', 'alumno se inscribio');
+        header('Location: index.php?controller=matriculas&action=index');
+        exit;
+    }
+
+    // Nueva acción para inscripción múltiple
+    public function massEnroll()
+    {
+        $this->requireRole(array('admin','maestro','profesor'));
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: index.php?controller=matriculas&action=index');
+            exit;
+        }
+
+        $materiaId = (int) $this->clean('materia_id');
+        $alumnoIds = isset($_POST['alumno_ids']) && is_array($_POST['alumno_ids']) ? $_POST['alumno_ids'] : array();
+
+        if (empty($materiaId) || empty($alumnoIds)) {
+            header('Location: index.php?controller=matriculas&action=index&error=datos');
+            exit;
+        }
+
+        // buscar materia
+        $materia = null;
+        foreach ($this->materiaModel->all() as $m) {
+            if ((int)$m['id'] === $materiaId) { $materia = $m; break; }
+        }
+        if (!$materia || empty($materia['docente_id'])) {
+            header('Location: index.php?controller=matriculas&action=index&error=materia');
+            exit;
+        }
+
+        $created = 0;
+        foreach ($alumnoIds as $alId) {
+            $alumnoId = (int)$alId;
+            if ($alumnoId <= 0) continue;
+
+            // evitar duplicados
+            if ($this->model->existsEnrollment($alumnoId, $materiaId)) continue;
+
+            // verificar créditos
+            if (method_exists($this->model, 'availableCredits')) {
+                $totalCreditos = $this->model->availableCredits($alumnoId);
+                if (($totalCreditos + (int)$materia['creditos']) > 12) {
+                    // saltar alumno que excede créditos
+                    continue;
+                }
+            }
+
+            $this->model->save(array(
+                'id' => '',
+                'alumno_id' => $alumnoId,
+                'docente_id' => (int)$materia['docente_id'],
+                'materia_id' => $materiaId,
+                'fecha_matricula' => date('Y-m-d'),
+                'obj1' => '',
+                'obj2' => '',
+                'obj3' => '',
+                'obj4' => '',
+            ));
+            $created++;
+        }
+
+        if ($created > 0) {
+            $this->logAction('create', 'matriculas', "inscribio $created alumnos en la materia {$materia['nombre']}");
+        }
+
         header('Location: index.php?controller=matriculas&action=index');
         exit;
     }
