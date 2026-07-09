@@ -7,6 +7,20 @@
     </div>
 </div>
 <br>
+
+<!-- Formulario de búsqueda -->
+<form method="get" action="index.php" class="form-inline" style="margin-bottom:10px;">
+    <input type="hidden" name="controller" value="alumnos">
+    <input type="hidden" name="action" value="index">
+    <div class="form-group">
+        <input type="text" name="q" class="form-control" placeholder="Buscar por nombre, apellido o correo" value="<?php echo isset($q) ? htmlspecialchars($q) : ''; ?>">
+    </div>
+    <button class="btn btn-default" type="submit">Buscar</button>
+    <?php if (!empty($q)): ?>
+        <a class="btn btn-link" href="index.php?controller=alumnos&action=index">Limpiar</a>
+    <?php endif; ?>
+</form>
+
 <div class="table-responsive">
     <table class="table table-bordered table-striped table-hover">
         <thead>
@@ -42,11 +56,11 @@
 <?php if (!empty($pages) && $pages > 1): ?>
     <nav>
         <ul class="pagination">
-            <li class="<?php echo $page <= 1 ? 'disabled' : ''; ?>"><a href="index.php?controller=alumnos&action=index&page=<?php echo max(1, $page - 1); ?>">«</a></li>
+            <li class="<?php echo $page <= 1 ? 'disabled' : ''; ?>"><a href="index.php?controller=alumnos&action=index&page=<?php echo max(1, $page - 1); ?><?php echo !empty($q) ? '&q=' . urlencode($q) : ''; ?>">«</a></li>
             <?php for ($i = 1; $i <= $pages; $i++): ?>
-                <li class="<?php echo $i === (int) $page ? 'active' : ''; ?>"><a href="index.php?controller=alumnos&action=index&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                <li class="<?php echo $i === (int) $page ? 'active' : ''; ?>"><a href="index.php?controller=alumnos&action=index&page=<?php echo $i; ?><?php echo !empty($q) ? '&q=' . urlencode($q) : ''; ?>"><?php echo $i; ?></a></li>
             <?php endfor; ?>
-            <li class="<?php echo $page >= $pages ? 'disabled' : ''; ?>"><a href="index.php?controller=alumnos&action=index&page=<?php echo min($pages, $page + 1); ?>">»</a></li>
+            <li class="<?php echo $page >= $pages ? 'disabled' : ''; ?>"><a href="index.php?controller=alumnos&action=index&page=<?php echo min($pages, $page + 1); ?><?php echo !empty($q) ? '&q=' . urlencode($q) : ''; ?>">»</a></li>
         </ul>
     </nav>
 <?php endif; ?>

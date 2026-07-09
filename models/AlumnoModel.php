@@ -3,8 +3,16 @@ require_once BASE_PATH . '/models/BaseModel.php';
 
 class AlumnoModel extends BaseModel
 {
-    public function all()
+    // Ahora acepta un parámetro $search opcional
+    public function all($search = null)
     {
+        if (!empty($search)) {
+            $like = '%' . $search . '%';
+            $stmt = $this->pdo->prepare('SELECT * FROM alumnos WHERE nombre LIKE ? OR apellido LIKE ? OR correo LIKE ? ORDER BY id DESC');
+            $stmt->execute(array($like, $like, $like));
+            return $stmt->fetchAll();
+        }
+
         return $this->pdo->query('SELECT * FROM alumnos ORDER BY id DESC')->fetchAll();
     }
 

@@ -14,7 +14,11 @@ class AlumnosController extends BaseCrudController
     public function index()
     {
         $this->requireRole(array('admin'));
-        $rows = $this->paginateRows($this->model->all(), isset($_GET['page']) ? (int) $_GET['page'] : 1, 10);
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $search = isset($_GET['q']) ? $this->clean('q') : null;
+        $rows = $this->paginateRows($this->model->all($search), $page, 10);
+        // pasar search a la vista para mantener el valor
+        $rows['q'] = $search;
         $this->view('alumnos/index', $rows);
     }
 

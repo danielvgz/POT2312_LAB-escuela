@@ -77,7 +77,8 @@ class MatriculaModel extends BaseModel
 
     public function alumnos()
     {
-        return $this->pdo->query('SELECT id, nombre, apellido FROM alumnos ORDER BY nombre ASC')->fetchAll();
+        // incluir correo para uso en listados/modales
+        return $this->pdo->query('SELECT id, nombre, apellido, correo FROM alumnos ORDER BY nombre ASC')->fetchAll();
     }
 
     public function docentes()
@@ -133,5 +134,14 @@ class MatriculaModel extends BaseModel
         $stmt = $this->pdo->prepare('SELECT id, nombre, creditos FROM materias WHERE docente_id = ? ORDER BY nombre ASC');
         $stmt->execute(array((int) $docenteId));
         return $stmt->fetchAll();
+    }
+
+    // evita duplicar matriculas
+    public function existsEnrollment($alumnoId, $materiaId)
+    {
+        $stmt = $this->pdo->prepare('SELECT COUNT(*) AS c FROM matriculas WHERE alumno_id = ? AND materia_id = ?');
+        $stmt->execute(array((int)$alumnoId, (int)$materiaId));
+        $r = $stmt->fetch();
+        return $r && $r['c'] > 0;
     }
 }
